@@ -30,6 +30,21 @@ app.use(cookieParser())
 
 
 
+//routes import
+import userRouter from "../routes/user.routes.js"
+
+
+//routes decleration
+app.use("/api/v1/users", userRouter) // Middleware // when got to /users ----> goes to userRouter first
+
+// Auto url assignment - userRouter
+// http://localhost:3000/api/v1/users/register
+// http://localhost:3000/api/v1/users/login
+
+
+
+
+
 
 
 export { app }
