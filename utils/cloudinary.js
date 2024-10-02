@@ -12,32 +12,6 @@ import fs from "fs"
     });
     
     
-    const uploadOnCloudinary = async (localFilePath) => {
-        try {
-            if (!localFilePath) return null
-            //upload the file on cloud
-            const response = await cloudinary.uploader.upload(localFilePath , {
-                resource_type : "auto"
-            })
-            //file has been uploaded
-            console.log("File Uploaded", response.url)
-            console.log("response from cloudinary => ", response)
-            return response
-        } catch (error) {
-            fs.unlinkSync(localFilePath) // remove locally saved temperory file as operation got failed
-            console.log(error)
-            return null
-        }
-        
-
-    }
-
-
-  
-    
-    
-    
-    
     // // Upload an image
     //  const uploadResult = await cloudinary.uploader
     //    .upload(
@@ -67,9 +41,40 @@ import fs from "fs"
     //     height: 500,
     // });
     
-    // console.log(autoCropUrl);    
+    // console.log(autoCropUrl);  
+    
 })();
 
 
 
-export {uploadOnCloudinary}
+const uploadOnCloudinary = async (localFilePath) => {
+    try {
+        if (!localFilePath) return null
+        //upload the file on cloud
+        const response = await cloudinary.uploader.upload(localFilePath , {
+            resource_type : "auto"
+        })
+        //file has been uploaded
+        // console.log("File Uploaded", response.url)
+        // console.log("response from cloudinary => ", response)
+
+        //unlinking - after successful upload
+        fs.unlinkSync(localFilePath)
+
+
+
+        return response
+
+
+    } catch (error) {
+        fs.unlinkSync(localFilePath) // remove locally saved temperory file as operation got failed
+        console.log(error)
+        return null
+    }
+    
+
+}
+
+
+
+export {uploadOnCloudinary} ;

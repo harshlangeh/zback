@@ -27,7 +27,7 @@ const userSchema = new Schema({
         
     },
     avatar : {
-        type : string, // cloudnary url / aws 
+        type : String, // cloudnary url / aws 
         required : true,
         
     },

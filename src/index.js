@@ -6,7 +6,7 @@ import { app } from './app.js'
 
 
 dotenv.config({
-    path: './env'
+    path: './.env'
 })
 
 // As connectionDB is an async function, so it will return a promise; we will use .then() .catch() to handle the response 

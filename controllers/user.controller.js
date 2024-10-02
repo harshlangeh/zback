@@ -1,7 +1,7 @@
 import { User } from "../models/users.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {uploadOnCloudinary}  from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 
@@ -33,7 +33,7 @@ const registerUser = asyncHandler( async (req,res) => {
                 // req.body - from experss
 
      const {fullName, email, username, password} = req.body
-     console.log("email : ", email)
+    //  console.log("email : ", email)
 
 
     // Step 2. // validation - no empty field
@@ -53,18 +53,27 @@ const registerUser = asyncHandler( async (req,res) => {
     
     // Step 3. // check if user already exist : username, email
         // findone, $or;  method by MongoDB
-    const existedUser = User.findOne({  $or: [{username},{email}]  }) 
+    const existedUser = await User.findOne({  $or: [{username},{email}]  }) 
 
     if(existedUser) {
         throw new ApiError(409, "username or email already exist")
     }
 
+    // console.log(req.files)
+
 
     // .files from multer
 
     const avatarLocalPath = req.files ?.avatar[0]?.path ;
-    const coverImageLocalPath = req.files ?.coverImage[0]?.path ;
+    // const coverImageLocalPath = req.files ?.coverImage[0]?.path ; -===>>> This code might give some error as we are not doing additional checking it like avatar - so, we chage the code using better approach by traditional if else
 
+    let coverImageLocalPath;
+
+    if (req.files && Array.isArray( req.files.coverImage) && req.files.coverImage.length > 0 ) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
+    
+    
     // additional check for avatar
     if(!avatarLocalPath){
         throw new ApiError(400, "avatar is required")
